@@ -1,5 +1,10 @@
 # Produce & Publish Server (pypi.python.org/pypi/pp.server)
-# with pre-installed PDFreactor demo version
+# with pre-installed 
+# - PDFreactor 7 eval version
+# - PrinceXML 9 eval version
+# - WKHTMLTOPDF 
+# - Calibre
+#
 # Usage:
 # docker run -p 8888:6543 zopyx/pp.server
 
@@ -32,22 +37,29 @@ RUN apt-get install -y \
     libxrender1  \
     libgif4
 
+
+# PDFREACTOR
 RUN wget -O p.tgz "http://www.pdfreactor.com/download/get/?product=pdfreactor&type=unix&jre=false"
 RUN tar xfvz p.tgz
 RUN rm p.tgz 
 
+# WKHTMLTOPDF
 RUN wget -O wk.deb http://downloads.sourceforge.net/project/wkhtmltopdf/0.12.1/wkhtmltox-0.12.1_linux-trusty-amd64.deb
 RUN dpkg --install wk.deb
 RUN rm wk.deb
 
+# PRINCEXML
 RUN wget -O prince.deb http://www.princexml.com/download/prince_9.0-5_ubuntu14.04_amd64.deb
 RUN dpkg --install prince.deb
 RUN rm prince.deb
 
+# CALIBRE
 RUN wget -nv -O- https://raw.githubusercontent.com/kovidgoyal/calibre/master/setup/linux-installer.py | sudo python -c "import sys; main=lambda x:sys.stderr.write('Download failed\n'); exec(sys.stdin.read()); main('/opt')"
 
+# INSTALL PRODUCE & PUBLISH SERVER
 RUN virtualenv .
 RUN bin/pip install pp.server
 ADD development.ini  /tmp/development.ini
+
 EXPOSE 6543
 CMD PATH=$PATH:$PWD/PDFreactor/bin; echo $PATH; bin/pserve /tmp/development.ini
