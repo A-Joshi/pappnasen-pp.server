@@ -26,19 +26,20 @@ RUN apt-get install -y \
     python-dev \
     libxml2-dev \
     libxslt1-dev \
-    wget 
+    wget \
+    fontconfig  \
+    libfontconfig1  \
+    libxrender1  \
+    libgif4
 
 RUN wget -O p.tgz "http://www.pdfreactor.com/download/get/?product=pdfreactor&type=unix&jre=false"
 RUN tar xfvz p.tgz
 RUN rm p.tgz 
 
-RUN apt-get install -y fontconfig libfontconfig1 libxrender1
-
 RUN wget -O wk.deb http://downloads.sourceforge.net/project/wkhtmltopdf/0.12.1/wkhtmltox-0.12.1_linux-trusty-amd64.deb
 RUN dpkg --install wk.deb
 RUN rm wk.deb
 
-RUN apt-get install -y libgif4
 RUN wget -O prince.deb http://www.princexml.com/download/prince_9.0-5_ubuntu14.04_amd64.deb
 RUN dpkg --install prince.deb
 RUN rm prince.deb
