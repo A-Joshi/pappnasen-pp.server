@@ -1,4 +1,4 @@
-make: build
+build:
 	docker build -t zopyx/pp.server .
 
 
